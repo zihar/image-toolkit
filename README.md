@@ -1,25 +1,25 @@
 # 🖼️ image-toolkit (`imgtool`)
 
-> CLI ringan untuk **konversi & resize gambar massal** dari terminal — berbasis [Pillow](https://python-pillow.org/).
+> Lightweight CLI for **bulk image conversion & resizing** from the terminal — built on [Pillow](https://python-pillow.org/).
 
 ![CI](https://github.com/zihar/image-toolkit/actions/workflows/ci.yml/badge.svg)
 ![Python](https://img.shields.io/badge/python-3.10%2B-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
-Konversi format (PNG ↔ JPG ↔ WebP …), perkecil/ubah ukuran satu file atau seluruh folder sekaligus, dan kompres untuk menghemat ukuran berkas — semuanya dengan satu perintah. Dilengkapi output tabel berwarna (`rich`), penanganan transparansi otomatis, **test** lengkap, dan **CI**.
+Convert formats (PNG ↔ JPG ↔ WebP …), shrink/resize a single file or an entire folder at once, and compress to save file size — all with a single command. Comes with colored table output (`rich`), automatic transparency handling, a full **test** suite, and **CI**.
 
-> ⚠️ Ganti `zihar` pada badge & URL di atas dengan username GitHub-mu bila berbeda.
+> ⚠️ Replace `zihar` in the badges & URLs above with your GitHub username if it's different.
 
-## ✨ Fitur
+## ✨ Features
 
-- **Batch** — proses satu file, banyak file, atau seluruh folder (`-r` untuk rekursif).
-- **Konversi format** — jpg, png, webp, bmp, tiff, gif.
-- **Resize fleksibel** — berdasarkan lebar, tinggi, skala persen, atau batas sisi terpanjang; jaga rasio otomatis (atau `--exact`).
-- **Kompres** — atur `--quality` untuk JPEG/WebP, optimasi PNG otomatis.
-- **Aman** — transparansi (RGBA) di-flatten ke putih saat ke JPEG; file asli tidak tertimpa tanpa sengaja.
-- **Laporan jelas** — tabel ukuran px, ukuran berkas, dan total penghematan.
+- **Batch** — process a single file, many files, or an entire folder (`-r` for recursive).
+- **Format conversion** — jpg, png, webp, bmp, tiff, gif.
+- **Flexible resize** — by width, height, percent scale, or longest-side limit; preserves aspect ratio automatically (or `--exact`).
+- **Compress** — set `--quality` for JPEG/WebP, automatic PNG optimization.
+- **Safe** — transparency (RGBA) is flattened to white when converting to JPEG; original files are not overwritten accidentally.
+- **Clear reports** — table of px dimensions, file size, and total savings.
 
-## 🚀 Instalasi
+## 🚀 Installation
 
 ```bash
 git clone https://github.com/zihar/image-toolkit.git
@@ -31,29 +31,29 @@ source .venv/bin/activate        # Windows: .venv\Scripts\activate
 pip install -e ".[dev]"
 ```
 
-## 🧑‍💻 Penggunaan
+## 🧑‍💻 Usage
 
 ```bash
-# Konversi satu gambar PNG → WebP
+# Convert a single PNG image → WebP
 imgtool convert foto.png --format webp
 
-# Konversi semua gambar di folder → JPG (kualitas 80), simpan ke folder lain
+# Convert all images in a folder → JPG (quality 80), save to another folder
 imgtool convert ./gambar -f jpg -q 80 --out ./hasil -r
 
-# Resize ke lebar 800px (tinggi otomatis menjaga rasio)
+# Resize to 800px width (height automatically preserves the ratio)
 imgtool resize foto.jpg --width 800
 
-# Perkecil semua gambar agar sisi terpanjang maksimal 1200px
+# Shrink all images so the longest side is at most 1200px
 imgtool resize ./album --max 1200 -r --out ./web
 
-# Resize 50% sekaligus konversi ke WebP
+# Resize 50% while converting to WebP
 imgtool resize foto.png --scale 50 --format webp
 
-# Lihat info gambar (dimensi, format, ukuran)
+# View image info (dimensions, format, size)
 imgtool info ./gambar -r
 ```
 
-Contoh keluaran:
+Example output:
 
 ```
         Selesai memproses 3 gambar
@@ -66,37 +66,37 @@ Contoh keluaran:
 Total hemat: 4.6MB
 ```
 
-## 🧩 Opsi `resize`
+## 🧩 `resize` Options
 
-| Opsi | Arti |
+| Option | Meaning |
 |---|---|
-| `--width, -w` | Lebar target (px), tinggi mengikuti rasio |
-| `--height, -h` | Tinggi target (px), lebar mengikuti rasio |
-| `--scale, -s` | Skala persen (mis. `50` = 50%) |
-| `--max` | Batasi sisi terpanjang (hanya memperkecil) |
-| `--exact` | Paksa lebar×tinggi persis, abaikan rasio |
-| `--format, -f` | Sekalian ubah format |
-| `--quality, -q` | Kualitas JPEG/WebP (1–100) |
-| `--out, -o` | Folder output |
-| `-r` | Telusuri folder rekursif |
+| `--width, -w` | Target width (px), height follows the ratio |
+| `--height, -h` | Target height (px), width follows the ratio |
+| `--scale, -s` | Percent scale (e.g. `50` = 50%) |
+| `--max` | Limit the longest side (shrink only) |
+| `--exact` | Force exact width×height, ignore ratio |
+| `--format, -f` | Change format at the same time |
+| `--quality, -q` | JPEG/WebP quality (1–100) |
+| `--out, -o` | Output folder |
+| `-r` | Traverse folders recursively |
 
-## 🏗️ Struktur Proyek
+## 🏗️ Project Structure
 
 ```
 src/imgtool/
-├── discovery.py   # temukan file gambar dari path/folder
-├── core.py        # hitung ukuran, konversi format, proses gambar (Pillow)
+├── discovery.py   # find image files from a path/folder
+├── core.py        # compute sizes, convert formats, process images (Pillow)
 └── cli.py         # CLI (click + rich): convert / resize / info
-tests/             # pytest — gambar dibuat on-the-fly via Pillow
+tests/             # pytest — images created on-the-fly via Pillow
 ```
 
-## 🧪 Menjalankan Test
+## 🧪 Running Tests
 
 ```bash
-pytest             # seluruh test (gambar dibuat otomatis, tanpa file eksternal)
+pytest             # all tests (images created automatically, no external files)
 ruff check .       # linting
 ```
 
-## 📄 Lisensi
+## 📄 License
 
 [MIT](LICENSE)
