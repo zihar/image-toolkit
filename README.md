@@ -66,19 +66,71 @@ Example output:
 Total hemat: 4.6MB
 ```
 
-## 🧩 `resize` Options
+## 📖 Command Reference
 
-| Option | Meaning |
-|---|---|
-| `--width, -w` | Target width (px), height follows the ratio |
-| `--height, -h` | Target height (px), width follows the ratio |
-| `--scale, -s` | Percent scale (e.g. `50` = 50%) |
-| `--max` | Limit the longest side (shrink only) |
-| `--exact` | Force exact width×height, ignore ratio |
-| `--format, -f` | Change format at the same time |
-| `--quality, -q` | JPEG/WebP quality (1–100) |
-| `--out, -o` | Output folder |
-| `-r` | Traverse folders recursively |
+`imgtool` has three subcommands. All accept one or more `INPUTS` — a file, several files, or a folder. Recognized formats: **jpg, jpeg, png, webp, bmp, tif/tiff, gif**.
+
+### `convert` — change format
+
+```bash
+imgtool convert INPUTS... -f FORMAT [options]
+```
+
+| Option | Required | Default | Meaning |
+|---|:---:|---|---|
+| `--format, -f` | ✅ | — | Target format: `jpg`, `png`, `webp`, `bmp`, `tiff`, `gif` |
+| `--quality, -q` | | `85` (1–100) | Quality for JPEG/WebP |
+| `--out, -o` | | next to source file | Output folder |
+| `--recursive, -r` | | off | Traverse folders recursively |
+
+```bash
+imgtool convert foto.png -f webp                      # single file
+imgtool convert foto.webp -f png                      # WebP → PNG
+imgtool convert ./gambar -f jpg -q 80 -o ./hasil -r   # entire folder
+```
+
+### `resize` — resize (optionally convert at the same time)
+
+```bash
+imgtool resize INPUTS... [--width|--height|--scale|--max] [options]
+```
+
+Pick **one** size mode (`--width`, `--height`, `--scale`, or `--max`). Aspect ratio is preserved automatically unless you use `--exact`.
+
+| Option | Default | Meaning |
+|---|---|---|
+| `--width, -w` | — | Target width (px), height follows the ratio |
+| `--height, -h` | — | Target height (px), width follows the ratio |
+| `--scale, -s` | — | Percent scale (e.g. `50` = 50%) |
+| `--max` | — | Limit the longest side (shrink only) |
+| `--exact` | off | Force exact width×height, ignore ratio |
+| `--format, -f` | source format | Change format at the same time (optional) |
+| `--quality, -q` | `85` (1–100) | JPEG/WebP quality |
+| `--out, -o` | next to source file | Output folder |
+| `--recursive, -r` | off | Traverse folders recursively |
+
+```bash
+imgtool resize foto.jpg -w 800                   # 800px width, height auto
+imgtool resize ./album --max 1200 -r -o ./web    # limit the longest side
+imgtool resize foto.png -s 50 -f webp            # 50% + convert to WebP
+```
+
+### `info` — show image info
+
+```bash
+imgtool info INPUTS... [-r]
+```
+
+| Option | Default | Meaning |
+|---|---|---|
+| `--recursive, -r` | off | Traverse folders recursively |
+
+```bash
+imgtool info foto.webp        # dimensions, format, file size
+imgtool info ./gambar -r      # entire folder
+```
+
+> 💡 **Built-in help:** every command has `--help`, e.g. `imgtool convert --help`.
 
 ## 🏗️ Project Structure
 
